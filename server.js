@@ -8,6 +8,7 @@ const session = require('express-session');
 const connectPgSimple = require('connect-pg-simple');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
 const { rateLimit } = require('express-rate-limit');
 const seedApps = require('./seed-apps.json');
 
@@ -45,6 +46,8 @@ const sessionStore = new PgSession({
 });
 const sitePasswordHash = bcrypt.hash(process.env.SITE_PASSWORD, 12);
 const adminPasswordHash = bcrypt.hash(process.env.ADMIN_PASSWORD, 12);
+const iconUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024, files: 1 } });
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
@@ -107,6 +110,7 @@ function slugify(value) {
 function safeImageUrl(value) {
   const candidate = String(value || '').trim();
   if (/^\/assets\/[A-Za-z0-9._-]+$/.test(candidate)) return candidate;
+  if (/^\/uploads\/\d+$/.test(candidate)) return candidate;
   try {
     const url = new URL(candidate);
     if (url.protocol === 'https:') return url.href;
@@ -135,7 +139,7 @@ function pageShell(title, content, extraHead = '') {
 <title>${escapeHtml(title)}</title>
 <style>
 :root{color-scheme:dark;--bg:#0b100e;--surface:#151c19;--surface2:#202a24;--green:#75e39a;--text:#f1f5f2;--muted:#aab6ae;--line:#2c3831;--danger:#ff8f8f}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:inherit}.wrap{max-width:1100px;margin:auto;padding:0 20px 48px}.top{min-height:68px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);color:var(--muted)}.brand{width:32px;height:32px;object-fit:cover;border-radius:9px}.top strong{color:var(--text)}.top .spacer{flex:1}.top a{color:var(--green);text-decoration:none;font-size:14px;font-weight:700}.hero{padding:36px 0 26px}.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.12;margin:0 0 10px;letter-spacing:-.035em}.hero p{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}.card{display:flex;flex-direction:column;align-items:flex-start;min-width:0}.card-icon{width:76px;height:76px;object-fit:cover;border-radius:18px;border:1px solid var(--line);margin-bottom:12px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--green);font-weight:750}.card h2{font-size:20px;line-height:1.25;margin:7px 0 8px;overflow-wrap:anywhere}.card .desc{color:var(--muted);font-size:14px;margin:0 0 14px}.meta{width:100%;background:var(--surface2);border-radius:12px;padding:11px 13px;margin:0 0 16px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.meta p{margin:0 0 7px}.meta p:last-child{margin-bottom:0}.meta strong{color:var(--text)}.meta .codes{color:var(--green);font-weight:750}.meta .variant{border-top:1px solid var(--line);padding-top:8px;margin-top:9px}.download{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;margin-top:auto}.download:hover{background:#92f0ae}.footer{font-size:12px;color:#829087;margin-top:22px}.admin-wrap{max-width:760px;margin:34px auto;padding:0 18px}.panel h1{margin-top:0}.panel label{display:block;font-weight:700;margin:14px 0 6px}.panel input,.panel textarea,.panel select{width:100%;border:1px solid var(--line);border-radius:9px;background:#0e1511;color:var(--text);padding:11px;font:inherit}.panel textarea{min-height:130px;resize:vertical}.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;padding:11px 16px;cursor:pointer}.button.secondary{background:#2a3730;color:var(--text)}.button.danger{background:#592d2d;color:#ffe1e1}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.error{background:#442626;color:#ffdada;border-radius:9px;padding:10px 12px;margin:12px 0}.success{color:var(--green)}.admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.admin-row:last-child{border-bottom:0}.admin-row small{display:block;color:var(--muted)}.checkbox{display:flex!important;gap:9px;align-items:center}.checkbox input{width:auto}.muted{color:var(--muted)}.logout{margin:0}.logout button{background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;padding:0}.logout button:hover{color:var(--green)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:inherit}.wrap{max-width:1100px;margin:auto;padding:0 20px 48px}.top{min-height:68px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);color:var(--muted)}.brand{width:32px;height:32px;object-fit:cover;border-radius:9px}.top strong{color:var(--text)}.top .spacer{flex:1}.top a{color:var(--green);text-decoration:none;font-size:14px;font-weight:700}.hero{padding:36px 0 26px}.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.12;margin:0 0 10px;letter-spacing:-.035em}.hero p{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}.card{display:flex;flex-direction:column;align-items:flex-start;min-width:0}.card-icon{width:76px;height:76px;object-fit:cover;border-radius:18px;border:1px solid var(--line);margin-bottom:12px}.icon-current{display:flex;align-items:center;gap:12px;margin-top:16px}.icon-current .card-icon{margin:0}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--green);font-weight:750}.card h2{font-size:20px;line-height:1.25;margin:7px 0 8px;overflow-wrap:anywhere}.card .desc{color:var(--muted);font-size:14px;margin:0 0 14px}.meta{width:100%;background:var(--surface2);border-radius:12px;padding:11px 13px;margin:0 0 16px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.meta p{margin:0 0 7px}.meta p:last-child{margin-bottom:0}.meta strong{color:var(--text)}.meta .codes{color:var(--green);font-weight:750}.meta .variant{border-top:1px solid var(--line);padding-top:8px;margin-top:9px}.download{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;margin-top:auto}.download:hover{background:#92f0ae}.footer{font-size:12px;color:#829087;margin-top:22px}.admin-wrap{max-width:760px;margin:34px auto;padding:0 18px}.panel h1{margin-top:0}.panel label{display:block;font-weight:700;margin:14px 0 6px}.panel input,.panel textarea,.panel select{width:100%;border:1px solid var(--line);border-radius:9px;background:#0e1511;color:var(--text);padding:11px;font:inherit}.panel textarea{min-height:130px;resize:vertical}.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;padding:11px 16px;cursor:pointer}.button.secondary{background:#2a3730;color:var(--text)}.button.danger{background:#592d2d;color:#ffe1e1}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.error{background:#442626;color:#ffdada;border-radius:9px;padding:10px 12px;margin:12px 0}.success{color:var(--green)}.admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.admin-row:last-child{border-bottom:0}.admin-row small{display:block;color:var(--muted)}.checkbox{display:flex!important;gap:9px;align-items:center}.checkbox input{width:auto}.muted{color:var(--muted)}.logout{margin:0}.logout button{background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;padding:0}.logout button:hover{color:var(--green)}
 @media(max-width:680px){.wrap{padding:0 14px 34px}.grid{grid-template-columns:1fr}.card,.panel{padding:17px}.hero{padding:28px 0 20px}.admin-row{align-items:flex-start;flex-direction:column}}
 </style>
 ${extraHead}
@@ -273,13 +277,16 @@ function adminFormPage(req, item = {}, error = '') {
   const val = (key) => escapeAttr(item[key] ?? '');
   const body = `<section class="panel"><div class="eyebrow">${isNew ? 'Novo item' : 'Editar item'}</div><h1>${isNew ? 'Adicionar aplicativo' : escapeHtml(item.name)}</h1>
     ${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}
-    <form method="post" action="/admin/apps/save">
+    <form method="post" action="/admin/apps/save" enctype="multipart/form-data">
       <input type="hidden" name="csrfToken" value="${escapeAttr(token)}"><input type="hidden" name="id" value="${val('id')}">
       <label for="name">Nome do aplicativo</label><input id="name" name="name" maxlength="160" value="${val('name')}" required>
       <label for="slug">Identificador (slug)</label><input id="slug" name="slug" maxlength="80" value="${val('slug')}" placeholder="Gerado automaticamente pelo nome">
       <label for="subtitle">Linha curta</label><input id="subtitle" name="subtitle" maxlength="180" value="${val('subtitle')}" placeholder="Ex.: Aplicativo Android">
       <label for="description">Descrição</label><textarea id="description" name="description" maxlength="2000">${escapeHtml(item.description || '')}</textarea>
-      <label for="icon_url">Caminho do ícone (ex.: /assets/app-01.jpg)</label><input id="icon_url" name="icon_url" maxlength="500" value="${val('icon_url')}" required>
+      <div class="icon-current"><img class="card-icon" src="${escapeAttr(safeImageUrl(item.icon_url || '/assets/app-01.jpg'))}" alt="Ícone atual"><span class="muted">Ícone atual</span></div>
+      <label for="icon_url">Caminho do ícone ou URL HTTPS</label><input id="icon_url" name="icon_url" maxlength="500" value="${val('icon_url')}" placeholder="Escolha um PNG abaixo ou informe /assets/...">
+      <label for="icon_png">Enviar ícone PNG do celular ou computador</label><input id="icon_png" name="icon_png" type="file" accept="image/png,.png">
+      <p class="muted">O PNG selecionado substituirá o caminho acima. Máximo 5 MB; a imagem fica salva no Neon.</p>
       <label for="download_url">Link do download ou da loja</label><input id="download_url" name="download_url" maxlength="1000" value="${val('download_url')}" placeholder="https://...">
       <label for="button_label">Texto do botão</label><input id="button_label" name="button_label" maxlength="80" value="${val('button_label')}">
       <label for="size_text">Tamanho do arquivo</label><input id="size_text" name="size_text" maxlength="80" value="${val('size_text')}" placeholder="Ex.: 59 MB">
@@ -311,8 +318,8 @@ function validateAppInput(body) {
   };
   if (!appData.name) return { error: 'Informe o nome do aplicativo.' };
   if (!appData.slug) return { error: 'Não foi possível gerar o identificador. Informe um slug válido.' };
-  if (!/^\/assets\/[A-Za-z0-9._-]+$/.test(appData.icon_url) && !/^https:\/\//i.test(appData.icon_url)) {
-    return { error: 'O ícone deve usar um caminho /assets/... ou uma URL HTTPS.' };
+  if (!/^\/assets\/[A-Za-z0-9._-]+$/.test(appData.icon_url) && !/^\/uploads\/\d+$/.test(appData.icon_url) && !/^https:\/\//i.test(appData.icon_url)) {
+    return { error: 'Selecione um PNG, informe um caminho /assets/... ou uma URL HTTPS para o ícone.' };
   }
   if (appData.download_url && !/^https:\/\//i.test(appData.download_url)) {
     return { error: 'O link de download deve começar com https://.' };
@@ -327,6 +334,16 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
   message: 'Muitas tentativas. Aguarde alguns minutos e tente novamente.'
 });
+
+function parseIconUpload(req, res, next) {
+  iconUpload.single('icon_png')(req, res, (error) => {
+    if (!error) return next();
+    const message = error.code === 'LIMIT_FILE_SIZE'
+      ? 'O PNG precisa ter até 5 MB.'
+      : 'Não foi possível ler o arquivo. Selecione uma imagem PNG e tente novamente.';
+    res.status(400).type('html').send(adminFormPage(req, req.body || {}, message));
+  });
+}
 
 app.get('/healthz', (req, res) => res.status(200).json({ status: 'ok' }));
 
@@ -360,6 +377,21 @@ app.post('/logout', requireSiteAccess, requireCsrf, (req, res, next) => {
     res.clearCookie('flashx.sid', { httpOnly: true, secure: isProduction, sameSite: 'lax' });
     res.redirect('/login');
   });
+});
+
+app.get('/uploads/:id', requireSiteAccess, async (req, res, next) => {
+  const id = Number.parseInt(req.params.id, 10);
+  if (!Number.isSafeInteger(id) || id < 1) return res.status(404).end();
+  try {
+    const result = await pool.query('SELECT image_data FROM app_images WHERE id=$1', [id]);
+    if (!result.rowCount) return res.status(404).end();
+    res.set('Content-Type', 'image/png');
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('Cache-Control', 'private, max-age=3600');
+    res.send(result.rows[0].image_data);
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.get('/', requireSiteAccess, async (req, res, next) => {
@@ -426,21 +458,36 @@ app.get('/admin/apps/:id/edit', requireAdmin, async (req, res, next) => {
   }
 });
 
-app.post('/admin/apps/save', requireAdmin, requireCsrf, async (req, res, next) => {
-  const validated = validateAppInput(req.body);
+app.post('/admin/apps/save', requireAdmin, parseIconUpload, requireCsrf, async (req, res, next) => {
+  if (req.file && (req.file.buffer.length < PNG_SIGNATURE.length || !req.file.buffer.subarray(0, PNG_SIGNATURE.length).equals(PNG_SIGNATURE))) {
+    return res.status(400).type('html').send(adminFormPage(req, req.body, 'O arquivo selecionado não é um PNG válido.'));
+  }
+  const input = { ...req.body, icon_url: req.file ? '/assets/app-01.jpg' : req.body.icon_url };
+  const validated = validateAppInput(input);
   if (validated.error) return res.status(400).type('html').send(adminFormPage(req, req.body, validated.error));
   const item = validated.appData;
   const id = Number.parseInt(req.body.id, 10);
+  let client;
   try {
-    if (id) {
-      await pool.query(`UPDATE applications SET slug=$1,name=$2,subtitle=$3,description=$4,icon_url=$5,download_url=$6,button_label=$7,size_text=$8,platform=$9,details=$10,display_order=$11,is_active=$12,updated_at=NOW() WHERE id=$13`, [item.slug,item.name,item.subtitle,item.description,item.icon_url,item.download_url,item.button_label,item.size_text,item.platform,item.details,item.display_order,item.is_active,id]);
-    } else {
-      await pool.query(`INSERT INTO applications (slug,name,subtitle,description,icon_url,download_url,button_label,size_text,platform,details,display_order,is_active) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`, [item.slug,item.name,item.subtitle,item.description,item.icon_url,item.download_url,item.button_label,item.size_text,item.platform,item.details,item.display_order,item.is_active]);
+    client = await pool.connect();
+    await client.query('BEGIN');
+    if (req.file) {
+      const image = await client.query('INSERT INTO app_images (image_data) VALUES ($1) RETURNING id', [req.file.buffer]);
+      item.icon_url = `/uploads/${image.rows[0].id}`;
     }
+    if (id) {
+      await client.query(`UPDATE applications SET slug=$1,name=$2,subtitle=$3,description=$4,icon_url=$5,download_url=$6,button_label=$7,size_text=$8,platform=$9,details=$10,display_order=$11,is_active=$12,updated_at=NOW() WHERE id=$13`, [item.slug,item.name,item.subtitle,item.description,item.icon_url,item.download_url,item.button_label,item.size_text,item.platform,item.details,item.display_order,item.is_active,id]);
+    } else {
+      await client.query(`INSERT INTO applications (slug,name,subtitle,description,icon_url,download_url,button_label,size_text,platform,details,display_order,is_active) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`, [item.slug,item.name,item.subtitle,item.description,item.icon_url,item.download_url,item.button_label,item.size_text,item.platform,item.details,item.display_order,item.is_active]);
+    }
+    await client.query('COMMIT');
     res.redirect('/admin');
   } catch (error) {
+    if (client) await client.query('ROLLBACK').catch(() => {});
     if (error.code === '23505') return res.status(400).type('html').send(adminFormPage(req, { ...item, id: id || '' }, 'Esse identificador já está em uso. Escolha outro slug.'));
     next(error);
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -517,6 +564,11 @@ async function initializeDatabase() {
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  )`);
+  await pool.query(`CREATE TABLE IF NOT EXISTS app_images (
+    id BIGSERIAL PRIMARY KEY,
+    image_data BYTEA NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   )`);
   const count = await pool.query('SELECT COUNT(*)::int AS total FROM applications');
   if (count.rows[0].total === 0) {

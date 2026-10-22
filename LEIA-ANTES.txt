@@ -1,0 +1,13 @@
+ATUALIZAÇÃO: UPLOAD DE ÍCONES PNG NO FLASHX ADMIN
+
+Este pacote atualiza o servidor para permitir escolher PNG no celular ou computador. As imagens (até 5 MB) são validadas e salvas no Neon, não no disco temporário do Render.
+
+APLICAR:
+1. Extraia este ZIP.
+2. Na raiz do repositório GitHub, substitua server.js, package.json e seed-apps.json pelos arquivos do ZIP. Mantenha sua pasta public/assets.
+3. Faça commit/push para a mesma branch usada pelo Render e aguarde o deploy.
+4. No FLASHX Admin, adicione/edite um aplicativo, escolha o arquivo no campo de PNG e salve.
+
+seed-apps.json fica vazio para não publicar links/códigos no GitHub. Não substitua nem compartilhe o JSON privado do catálogo.
+
+O código não foi executado/testado contra o Render/Neon nesta atualização; se o build falhar, confira os Logs do Render.
