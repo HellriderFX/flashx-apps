@@ -86,7 +86,7 @@ Nunca envie `.env` nem o JSON privado ao GitHub.
 
 ## Ícones
 
-No formulário de aplicativo, escolha um arquivo PNG no armazenamento do celular ou do computador. O limite é 5 MB. O PNG é conferido e salvo na tabela `app_images` do Neon, e o endereço interno `/uploads/<id>` é usado como ícone; assim a imagem não depende do disco temporário do Render e continua disponível após reinícios e deploys. Também é possível usar os ícones já guardados em `public/assets/` ou uma URL HTTPS.
+No formulário de aplicativo, escolha um arquivo PNG no armazenamento do celular ou do computador. O limite é 5 MB. O PNG é conferido e salvo na tabela `app_images` do Neon, e o endereço interno `/uploads/<id>` é usado como ícone; assim a imagem não depende do disco temporário do Render e continua disponível após reinícios e deploys. Também é possível usar os ícones já guardados em `public/assets/` ou uma URL HTTPS. Ao editar um cadastro, **Remover ícone atual** limpa o ícone do cartão sem apagar o aplicativo; o cartão passa a mostrar um espaço reservado. Para imagens enviadas, o arquivo também é removido do Neon se nenhum outro aplicativo o utilizar.
 
 ## Status
 

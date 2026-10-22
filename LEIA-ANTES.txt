@@ -1,12 +1,12 @@
-ATUALIZAÇÃO: UPLOAD DE ÍCONES PNG NO FLASHX ADMIN
+ATUALIZAÇÃO: PNG E REMOÇÃO DE ÍCONE NO FLASHX ADMIN
 
-Este pacote atualiza o servidor para permitir escolher PNG no celular ou computador. As imagens (até 5 MB) são validadas e salvas no Neon, não no disco temporário do Render.
+Este pacote adiciona no formulário de aplicativo o envio de PNG pelo celular ou computador e o botão para remover o ícone atual. O PNG tem limite de 5 MB, é validado e fica salvo no Neon, mesmo após reinícios/deploys do Render.
 
 APLICAR:
 1. Extraia este ZIP.
-2. Na raiz do repositório GitHub, substitua server.js, package.json e seed-apps.json pelos arquivos do ZIP. Mantenha sua pasta public/assets.
+2. Na raiz do repositório GitHub, substitua server.js, package.json, seed-apps.json e README.md pelos arquivos do ZIP. Mantenha sua pasta public/assets.
 3. Faça commit/push para a mesma branch usada pelo Render e aguarde o deploy.
-4. No FLASHX Admin, adicione/edite um aplicativo, escolha o arquivo no campo de PNG e salve.
+4. No FLASHX Admin, adicione/edite um aplicativo: escolha o PNG e salve. Para limpar um ícone existente sem apagar o aplicativo, edite-o e use “Remover ícone atual”. O cartão passará a mostrar um espaço reservado.
 
 seed-apps.json fica vazio para não publicar links/códigos no GitHub. Não substitua nem compartilhe o JSON privado do catálogo.
 

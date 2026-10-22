@@ -115,7 +115,7 @@ function safeImageUrl(value) {
     const url = new URL(candidate);
     if (url.protocol === 'https:') return url.href;
   } catch (_) {}
-  return '/assets/app-01.jpg';
+  return '';
 }
 
 function safeDownloadUrl(value) {
@@ -139,7 +139,7 @@ function pageShell(title, content, extraHead = '') {
 <title>${escapeHtml(title)}</title>
 <style>
 :root{color-scheme:dark;--bg:#0b100e;--surface:#151c19;--surface2:#202a24;--green:#75e39a;--text:#f1f5f2;--muted:#aab6ae;--line:#2c3831;--danger:#ff8f8f}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:inherit}.wrap{max-width:1100px;margin:auto;padding:0 20px 48px}.top{min-height:68px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);color:var(--muted)}.brand{width:32px;height:32px;object-fit:cover;border-radius:9px}.top strong{color:var(--text)}.top .spacer{flex:1}.top a{color:var(--green);text-decoration:none;font-size:14px;font-weight:700}.hero{padding:36px 0 26px}.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.12;margin:0 0 10px;letter-spacing:-.035em}.hero p{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}.card{display:flex;flex-direction:column;align-items:flex-start;min-width:0}.card-icon{width:76px;height:76px;object-fit:cover;border-radius:18px;border:1px solid var(--line);margin-bottom:12px}.icon-current{display:flex;align-items:center;gap:12px;margin-top:16px}.icon-current .card-icon{margin:0}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--green);font-weight:750}.card h2{font-size:20px;line-height:1.25;margin:7px 0 8px;overflow-wrap:anywhere}.card .desc{color:var(--muted);font-size:14px;margin:0 0 14px}.meta{width:100%;background:var(--surface2);border-radius:12px;padding:11px 13px;margin:0 0 16px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.meta p{margin:0 0 7px}.meta p:last-child{margin-bottom:0}.meta strong{color:var(--text)}.meta .codes{color:var(--green);font-weight:750}.meta .variant{border-top:1px solid var(--line);padding-top:8px;margin-top:9px}.download{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;margin-top:auto}.download:hover{background:#92f0ae}.footer{font-size:12px;color:#829087;margin-top:22px}.admin-wrap{max-width:760px;margin:34px auto;padding:0 18px}.panel h1{margin-top:0}.panel label{display:block;font-weight:700;margin:14px 0 6px}.panel input,.panel textarea,.panel select{width:100%;border:1px solid var(--line);border-radius:9px;background:#0e1511;color:var(--text);padding:11px;font:inherit}.panel textarea{min-height:130px;resize:vertical}.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;padding:11px 16px;cursor:pointer}.button.secondary{background:#2a3730;color:var(--text)}.button.danger{background:#592d2d;color:#ffe1e1}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.error{background:#442626;color:#ffdada;border-radius:9px;padding:10px 12px;margin:12px 0}.success{color:var(--green)}.admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.admin-row:last-child{border-bottom:0}.admin-row small{display:block;color:var(--muted)}.checkbox{display:flex!important;gap:9px;align-items:center}.checkbox input{width:auto}.muted{color:var(--muted)}.logout{margin:0}.logout button{background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;padding:0}.logout button:hover{color:var(--green)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:inherit}.wrap{max-width:1100px;margin:auto;padding:0 20px 48px}.top{min-height:68px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);color:var(--muted)}.brand{width:32px;height:32px;object-fit:cover;border-radius:9px}.top strong{color:var(--text)}.top .spacer{flex:1}.top a{color:var(--green);text-decoration:none;font-size:14px;font-weight:700}.hero{padding:36px 0 26px}.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.12;margin:0 0 10px;letter-spacing:-.035em}.hero p{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}.card{display:flex;flex-direction:column;align-items:flex-start;min-width:0}.card-icon{width:76px;height:76px;object-fit:cover;border-radius:18px;border:1px solid var(--line);margin-bottom:12px}.icon-current{display:flex;align-items:center;gap:12px;margin-top:16px}.icon-current .card-icon{margin:0}.no-icon{display:grid;place-items:center;text-align:center;background:var(--surface2);color:var(--muted);font-size:12px;overflow-wrap:anywhere;padding:6px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--green);font-weight:750}.card h2{font-size:20px;line-height:1.25;margin:7px 0 8px;overflow-wrap:anywhere}.card .desc{color:var(--muted);font-size:14px;margin:0 0 14px}.meta{width:100%;background:var(--surface2);border-radius:12px;padding:11px 13px;margin:0 0 16px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.meta p{margin:0 0 7px}.meta p:last-child{margin-bottom:0}.meta strong{color:var(--text)}.meta .codes{color:var(--green);font-weight:750}.meta .variant{border-top:1px solid var(--line);padding-top:8px;margin-top:9px}.download{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;margin-top:auto}.download:hover{background:#92f0ae}.footer{font-size:12px;color:#829087;margin-top:22px}.admin-wrap{max-width:760px;margin:34px auto;padding:0 18px}.panel h1{margin-top:0}.panel label{display:block;font-weight:700;margin:14px 0 6px}.panel input,.panel textarea,.panel select{width:100%;border:1px solid var(--line);border-radius:9px;background:#0e1511;color:var(--text);padding:11px;font:inherit}.panel textarea{min-height:130px;resize:vertical}.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;background:var(--green);color:#102218;text-decoration:none;font-weight:800;padding:11px 16px;cursor:pointer}.button.secondary{background:#2a3730;color:var(--text)}.button.danger{background:#592d2d;color:#ffe1e1}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.error{background:#442626;color:#ffdada;border-radius:9px;padding:10px 12px;margin:12px 0}.success{color:var(--green)}.admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.admin-row:last-child{border-bottom:0}.admin-row small{display:block;color:var(--muted)}.checkbox{display:flex!important;gap:9px;align-items:center}.checkbox input{width:auto}.muted{color:var(--muted)}.logout{margin:0}.logout button{background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;padding:0}.logout button:hover{color:var(--green)}
 @media(max-width:680px){.wrap{padding:0 14px 34px}.grid{grid-template-columns:1fr}.card,.panel{padding:17px}.hero{padding:28px 0 20px}.admin-row{align-items:flex-start;flex-direction:column}}
 </style>
 ${extraHead}
@@ -162,6 +162,9 @@ function codeMarkup(line) {
 
 function renderAppCard(item) {
   const icon = safeImageUrl(item.icon_url);
+  const iconMarkup = icon
+    ? `<img class="card-icon" src="${escapeAttr(icon)}" alt="Ícone de ${escapeAttr(item.name)}" loading="lazy">`
+    : `<div class="card-icon no-icon" role="img" aria-label="Sem ícone para ${escapeAttr(item.name)}">Ícone de ${escapeHtml(item.name)}</div>`;
   const downloadUrl = safeDownloadUrl(item.download_url);
   const meta = [];
   if (item.size_text) meta.push(`<p><strong>Tamanho:</strong> ${escapeHtml(item.size_text)}</p>`);
@@ -174,7 +177,7 @@ function renderAppCard(item) {
     ? `<a class="download" href="${escapeAttr(downloadUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.button_label || 'Abrir download')}</a>`
     : '';
   return `<article class="card">
-    <img class="card-icon" src="${escapeAttr(icon)}" alt="Ícone de ${escapeAttr(item.name)}" loading="lazy">
+    ${iconMarkup}
     <div class="eyebrow">${escapeHtml(item.subtitle || 'Aplicativo Android')}</div>
     <h2>${escapeHtml(item.name)}</h2>
     <p class="desc">${escapeHtml(item.description || '')}</p>
@@ -275,15 +278,20 @@ function adminFormPage(req, item = {}, error = '') {
   const token = ensureCsrf(req);
   const isNew = !item.id;
   const val = (key) => escapeAttr(item[key] ?? '');
+  const currentIcon = safeImageUrl(item.icon_url);
+  const currentIconMarkup = currentIcon
+    ? `<img class="card-icon" src="${escapeAttr(currentIcon)}" alt="Ícone atual">`
+    : `<div class="card-icon no-icon">Sem ícone</div>`;
+  const iconRemovedMessage = req.query.iconRemoved ? '<p class="success">Ícone removido. O cartão exibirá o espaço reservado.</p>' : '';
   const body = `<section class="panel"><div class="eyebrow">${isNew ? 'Novo item' : 'Editar item'}</div><h1>${isNew ? 'Adicionar aplicativo' : escapeHtml(item.name)}</h1>
-    ${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}
+    ${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}${iconRemovedMessage}
     <form method="post" action="/admin/apps/save" enctype="multipart/form-data">
       <input type="hidden" name="csrfToken" value="${escapeAttr(token)}"><input type="hidden" name="id" value="${val('id')}">
       <label for="name">Nome do aplicativo</label><input id="name" name="name" maxlength="160" value="${val('name')}" required>
       <label for="slug">Identificador (slug)</label><input id="slug" name="slug" maxlength="80" value="${val('slug')}" placeholder="Gerado automaticamente pelo nome">
       <label for="subtitle">Linha curta</label><input id="subtitle" name="subtitle" maxlength="180" value="${val('subtitle')}" placeholder="Ex.: Aplicativo Android">
       <label for="description">Descrição</label><textarea id="description" name="description" maxlength="2000">${escapeHtml(item.description || '')}</textarea>
-      <div class="icon-current"><img class="card-icon" src="${escapeAttr(safeImageUrl(item.icon_url || '/assets/app-01.jpg'))}" alt="Ícone atual"><span class="muted">Ícone atual</span></div>
+      <div class="icon-current">${currentIconMarkup}<span class="muted">Ícone atual</span></div>
       <label for="icon_url">Caminho do ícone ou URL HTTPS</label><input id="icon_url" name="icon_url" maxlength="500" value="${val('icon_url')}" placeholder="Escolha um PNG abaixo ou informe /assets/...">
       <label for="icon_png">Enviar ícone PNG do celular ou computador</label><input id="icon_png" name="icon_png" type="file" accept="image/png,.png">
       <p class="muted">O PNG selecionado substituirá o caminho acima. Máximo 5 MB; a imagem fica salva no Neon.</p>
@@ -296,6 +304,7 @@ function adminFormPage(req, item = {}, error = '') {
       <label class="checkbox"><input type="checkbox" name="is_active" ${item.is_active === false ? '' : 'checked'}> Publicado no catálogo</label>
       <div class="actions"><button class="button" type="submit">Salvar</button><a class="button secondary" href="/admin">Cancelar</a></div>
     </form>
+    ${!isNew && item.icon_url ? `<form method="post" action="/admin/apps/${item.id}/remove-icon"><input type="hidden" name="csrfToken" value="${escapeAttr(token)}"><div class="actions"><button class="button secondary" type="submit">Remover ícone atual</button></div></form>` : ''}
     ${!isNew ? `<form method="post" action="/admin/apps/${item.id}/delete"><input type="hidden" name="csrfToken" value="${escapeAttr(token)}"><div class="actions"><button class="button danger" type="submit">Apagar aplicativo</button></div></form>` : ''}
   </section>`;
   return adminFrame(req, isNew ? 'Adicionar aplicativo — FLASHX' : `Editar ${item.name} — FLASHX`, body);
@@ -318,7 +327,7 @@ function validateAppInput(body) {
   };
   if (!appData.name) return { error: 'Informe o nome do aplicativo.' };
   if (!appData.slug) return { error: 'Não foi possível gerar o identificador. Informe um slug válido.' };
-  if (!/^\/assets\/[A-Za-z0-9._-]+$/.test(appData.icon_url) && !/^\/uploads\/\d+$/.test(appData.icon_url) && !/^https:\/\//i.test(appData.icon_url)) {
+  if (appData.icon_url && !/^\/assets\/[A-Za-z0-9._-]+$/.test(appData.icon_url) && !/^\/uploads\/\d+$/.test(appData.icon_url) && !/^https:\/\//i.test(appData.icon_url)) {
     return { error: 'Selecione um PNG, informe um caminho /assets/... ou uma URL HTTPS para o ícone.' };
   }
   if (appData.download_url && !/^https:\/\//i.test(appData.download_url)) {
@@ -520,6 +529,36 @@ app.post('/admin/apps/import', requireAdmin, requireCsrf, async (req, res, next)
     }
     await client.query('COMMIT');
     res.redirect(`/admin?imported=${appsToImport.length}`);
+  } catch (error) {
+    if (client) await client.query('ROLLBACK').catch(() => {});
+    next(error);
+  } finally {
+    if (client) client.release();
+  }
+});
+
+app.post('/admin/apps/:id/remove-icon', requireAdmin, requireCsrf, async (req, res, next) => {
+  const appId = Number.parseInt(req.params.id, 10);
+  if (!Number.isSafeInteger(appId) || appId < 1) return res.status(404).end();
+  let client;
+  try {
+    client = await pool.connect();
+    await client.query('BEGIN');
+    const result = await client.query('SELECT icon_url FROM applications WHERE id=$1 FOR UPDATE', [appId]);
+    if (!result.rowCount) {
+      await client.query('ROLLBACK');
+      return res.status(404).send('Aplicativo não encontrado.');
+    }
+    const previousIcon = String(result.rows[0].icon_url || '');
+    await client.query("UPDATE applications SET icon_url='', updated_at=NOW() WHERE id=$1", [appId]);
+    const match = previousIcon.match(/^\/uploads\/(\d+)$/);
+    if (match) {
+      await client.query(`DELETE FROM app_images WHERE id=$1 AND NOT EXISTS (
+        SELECT 1 FROM applications WHERE icon_url=$2
+      )`, [match[1], `/uploads/${match[1]}`]);
+    }
+    await client.query('COMMIT');
+    res.redirect(`/admin/apps/${appId}/edit?iconRemoved=1`);
   } catch (error) {
     if (client) await client.query('ROLLBACK').catch(() => {});
     next(error);
