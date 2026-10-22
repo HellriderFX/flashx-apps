@@ -1,13 +1,15 @@
-ATUALIZAÇÃO: PNG E REMOÇÃO DE ÍCONE NO FLASHX ADMIN
+ATUALIZAÇÃO FLASHX ADMIN — LOGO, PNG DE ÍCONE E REMOÇÃO
 
-Este pacote adiciona no formulário de aplicativo o envio de PNG pelo celular ou computador e o botão para remover o ícone atual. O PNG tem limite de 5 MB, é validado e fica salvo no Neon, mesmo após reinícios/deploys do Render.
+Inclui a logo enviada no cabeçalho esquerdo de “FLASHX · Central de Aplicativos”, o envio de ícones PNG no formulário dos aplicativos e o botão “Remover ícone atual”. Os ícones PNG enviados são salvos no Neon; a função de remover limpa apenas o ícone, sem apagar o aplicativo.
 
 APLICAR:
-1. Extraia este ZIP.
-2. Na raiz do repositório GitHub, substitua server.js, package.json, seed-apps.json e README.md pelos arquivos do ZIP. Mantenha sua pasta public/assets.
-3. Faça commit/push para a mesma branch usada pelo Render e aguarde o deploy.
-4. No FLASHX Admin, adicione/edite um aplicativo: escolha o PNG e salve. Para limpar um ícone existente sem apagar o aplicativo, edite-o e use “Remover ícone atual”. O cartão passará a mostrar um espaço reservado.
+1. Extraia o ZIP.
+2. Na raiz do repositório GitHub, substitua server.js e package.json.
+3. Adicione public/assets/flashx-header.png ao mesmo caminho. Mantenha os demais arquivos de public/assets.
+4. Envie para a mesma branch usada pelo Render e aguarde o deploy.
 
-seed-apps.json fica vazio para não publicar links/códigos no GitHub. Não substitua nem compartilhe o JSON privado do catálogo.
+Depois do deploy, o cabeçalho mostra a logo à esquerda. Em cada formulário de aplicativo, escolha um PNG (até 5 MB) para usar no cartão ou remova o ícone atual.
 
-O código não foi executado/testado contra o Render/Neon nesta atualização; se o build falhar, confira os Logs do Render.
+A imagem incluída é uma cópia otimizada para exibição pequena no cabeçalho, sem cortes e com transparência; a imagem original do usuário não foi alterada.
+
+O código não foi executado/testado com uma instância Render/Neon real nesta atualização.
